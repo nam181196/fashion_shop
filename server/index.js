@@ -3,47 +3,87 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
-// Import cái Model vừa tạo ở bước 1
 const Product = require('./models/Product'); 
+const Order = require('./models/Order');
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5005;
 
-// Middleware
-app.use(cors());
-app.use(express.json()); // Để đọc được JSON gửi lên
+// 1. Cấu hình CORS chi tiết hơn để tránh lỗi 403
+app.use(cors({
+  origin: 'http://localhost:3000', // Cho phép web ở cổng 3000 truy cập
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
 
-// Kết nối MongoDB
+app.use(express.json());
+
+// 2. Thêm một route mặc định để kiểm tra server sống hay chết
+app.get('/', (req, res) => {
+  res.send("API Server is running...");
+});
+
+// Kết nối MongoDB (Ưu tiên dùng 127.0.0.1 trong file .env nếu localhost lỗi)
 mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log('✅ Đã kết nối MongoDB thành công'))
   .catch((err) => console.error('❌ Lỗi kết nối MongoDB:', err));
 
-// --- CÁC API ---
+// --- API ---
 
-// 1. API Lấy danh sách sản phẩm (Frontend sẽ gọi cái này)
+// Lấy danh sách sản phẩm
 app.get('/api/products', async (req, res) => {
   try {
-    const products = await Product.find().sort({ createdAt: -1 }); // Lấy tất cả, mới nhất lên đầu
+    const products = await Product.find().sort({ createdAt: -1 });
     res.status(200).json(products);
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ message: "Lỗi lấy dữ liệu", error: err.message });
   }
 });
 
-// 2. API Thêm sản phẩm mới (Dùng để nhập hàng)
+// Lấy chi tiết 1 sản phẩm theo ID (Dùng cho trang [id]/page.js)
+app.get('/api/products/:id', async (req, res) => {
+    try {
+      const product = await Product.findById(req.params.id);
+      if (!product) return res.status(404).json("Không tìm thấy sản phẩm");
+      res.status(200).json(product);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  });
+
+// Thêm sản phẩm mới
 app.post('/api/products', async (req, res) => {
   try {
     const newProduct = new Product(req.body);
-    const savedProduct = await newProduct.save(); // Lưu vào DB
-    res.status(200).json(savedProduct);
+    const savedProduct = await newProduct.save();
+    res.status(201).json(savedProduct);
+  } catch (err) {
+    res.status(500).json({ message: "Lỗi lưu dữ liệu", error: err.message });
+  }
+});
+
+app.post('/api/orders', async (req, res) => {
+  try {
+    const newOrder = new Order(req.body);
+    const savedOrder = await newOrder.save();
+    res.status(201).json(savedOrder);
+  } catch (err) {
+    res.status(500).json({ message: "Lỗi lưu đơn hàng", error: err.message });
+  }
+});
+
+// API: Lấy danh sách đơn hàng (Cho trang Admin xem)
+app.get('/api/orders', async (req, res) => {
+  try {
+    const orders = await Order.find().sort({ createdAt: -1 });
+    res.status(200).json(orders);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-// Chạy server
 app.listen(PORT, () => {
   console.log(`🚀 Server đang chạy tại http://localhost:${PORT}`);
 });

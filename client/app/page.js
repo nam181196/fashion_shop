@@ -13,8 +13,8 @@ export default function Home() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        // Gọi xuống Backend (cổng 5000)
-        const res = await axios.get('http://localhost:5000/api/products');
+        // Gọi xuống Backend (cổng 5005)
+        const res = await axios.get('http://localhost:5005/api/products');
         setProducts(res.data);
         setLoading(false);
       } catch (error) {

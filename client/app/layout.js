@@ -1,7 +1,8 @@
 // client/app/layout.js
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "../components/Header"; // Import Header
+import Header from "../components/Header";
+import { CartProvider } from "../context/CartContext"; // <--- 1. Import Provider
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,16 +26,19 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 text-black`}
       >
-        <Header /> {/* Header nằm trên cùng */}
-        
-        <main className="min-h-screen">
-          {children}
-        </main>
+        {/* 2. Bọc CartProvider ra ngoài cùng để cả web hiểu được Giỏ Hàng */}
+        <CartProvider>
+          <Header /> {/* Header nằm trên cùng */}
+          
+          <main className="min-h-screen">
+            {children}
+          </main>
 
-        {/* Footer nằm dưới cùng */}
-        <footer className="bg-black text-white py-6 text-center mt-10">
-          <p>© 2024 MEN STORE - All rights reserved.</p>
-        </footer>
+          {/* Footer nằm dưới cùng */}
+          <footer className="bg-black text-white py-6 text-center mt-10">
+            <p>© 2024 MEN STORE - All rights reserved.</p>
+          </footer>
+        </CartProvider>
       </body>
     </html>
   );
