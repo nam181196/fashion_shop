@@ -16,7 +16,9 @@ public class PlaywrightE2ETest {
         try (Playwright playwright = Playwright.create()) {
             Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(true));
             Page page = browser.newPage();
-            page.navigate("http://localhost:8080");
+            String base = System.getenv("PLAYWRIGHT_BASE_URL");
+            if (base == null || base.isBlank()) base = "http://localhost:8081";
+            page.navigate(base);
             page.waitForLoadState();
         }
     }
