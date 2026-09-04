@@ -4,10 +4,12 @@ services:
   postgres:
     image: postgres:16-alpine
     container_name: postgres
+    env_file:
+      - .env
     environment:
-      POSTGRES_USER: bankrate
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: bankrate_db
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     ports:
       - "5432:5432"
     volumes:
@@ -17,10 +19,8 @@ services:
     container_name: bankrate-app
     depends_on:
       - postgres
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bankrate_db
-      SPRING_DATASOURCE_USERNAME: bankrate
-      SPRING_DATASOURCE_PASSWORD: password
+    env_file:
+      - .env
     ports:
       - "8080:8080"
 

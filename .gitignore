@@ -8,3 +8,4 @@ target/
 bin/
 *.log
 node_modules/
+.env
