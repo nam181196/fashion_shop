@@ -1,0 +1,10 @@
+target/
+.idea/
+.vscode/
+*.iml
+/.mvn/
+/.classpath
+/.project
+bin/
+*.log
+node_modules/
