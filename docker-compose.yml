@@ -12,6 +12,17 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+  app:
+    build: .
+    container_name: bankrate-app
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bankrate_db
+      SPRING_DATASOURCE_USERNAME: bankrate
+      SPRING_DATASOURCE_PASSWORD: password
+    ports:
+      - "8080:8080"
 
 volumes:
   postgres_data:

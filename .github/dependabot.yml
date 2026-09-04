@@ -1,0 +1,12 @@
+version: 2
+updates:
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    # Optionally ignore specific dependencies
+    # ignore:
+    #   - dependency-name: "group:artifact"
+    #     versions:
+    #       - "< 2.0.0"
