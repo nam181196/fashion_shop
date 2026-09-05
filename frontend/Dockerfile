@@ -1,7 +1,8 @@
 FROM node:20-alpine as build
 WORKDIR /app
 COPY package.json package-lock.json* ./
-RUN npm ci --silent || npm install --silent
+# Use npm install as fallback in environments without lockfile
+RUN npm install --silent
 COPY . .
 RUN npm run build
 

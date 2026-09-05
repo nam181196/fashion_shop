@@ -1,0 +1,12 @@
+:root{ --bg:#f7fafc; --card:#fff; --muted:#666; --accent:#0b66ff }
+body{font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;margin:0;background:var(--bg);color:#111}
+.container{max-width:900px;margin:32px auto;padding:20px}
+header h1{margin:0 0 4px}
+.muted{color:var(--muted)}
+.controls{display:flex;gap:8px;margin:12px 0}
+input#q{flex:1;padding:8px;border:1px solid #ddd;border-radius:4px}
+button{padding:8px 12px;background:var(--accent);color:#fff;border:0;border-radius:4px}
+table{width:100%;border-collapse:collapse;margin-top:12px}
+th,td{padding:10px;border-bottom:1px solid #eee;text-align:left}
+.hidden{display:none}
+footer{margin-top:18px;color:var(--muted)}

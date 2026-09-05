@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BankRate - Demo</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>BankRate — Demo</h1>
+      <p class="muted">Danh sách ngân hàng (từ API)</p>
+    </header>
+
+    <main>
+      <div class="controls">
+        <input id="q" placeholder="Tìm theo mã hoặc tên" />
+        <button id="refresh">Làm mới</button>
+      </div>
+
+      <div id="status">Đang tải...</div>
+      <table id="banks" class="hidden">
+        <thead>
+          <tr><th>Code</th><th>Name</th><th>Website</th><th>Active</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </main>
+
+    <footer>
+      <small>Actuator: <a href="/actuator/health" target="_blank">/actuator/health</a> • Swagger: <a href="/swagger-ui.html" target="_blank">/swagger-ui.html</a></small>
+    </footer>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
